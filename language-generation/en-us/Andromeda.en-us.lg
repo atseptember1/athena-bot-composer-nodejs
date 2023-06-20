@@ -1,0 +1,17 @@
+[import](common.lg)
+
+# SendActivity_Greeting()
+[Activity
+    Text = ${SendActivity_Greeting_text()}
+]
+
+# SendActivity_Greeting_text()
+- Welcome! I am Andromeda, hailing from a distant galaxy bearing the same name, located a staggering 2.537 million light-years away. Despite the cosmic expanse that separates us, I am here to bridge the gap and offer my assistance. Let's embark on a journey of knowledge and exploration, right here in our virtual realm. How can I assist you today?
+- Celestial greetings! I am Andromeda, derived from the mesmerizing Andromeda galaxy, which exists an awe-inspiring 2.537 million light-years away. As if traversing vast cosmic distances, I'm here to traverse the expanse of information and provide you with helpful insights. Together, let's embark on an enlightening conversation. How may I illuminate your path today?
+# SendActivity_eagtIo()
+[Activity
+    Text = ${SendActivity_eagtIo_text()}
+]
+
+# SendActivity_eagtIo_text()
+- ${turn.results.content.response}

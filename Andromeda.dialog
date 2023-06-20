@@ -1,0 +1,180 @@
+{
+  "$kind": "Microsoft.AdaptiveDialog",
+  "$designer": {
+    "name": "Andromeda",
+    "description": "",
+    "id": "A79tBe"
+  },
+  "autoEndDialog": true,
+  "defaultResultProperty": "dialog.result",
+  "triggers": [
+    {
+      "$kind": "Microsoft.OnConversationUpdateActivity",
+      "$designer": {
+        "id": "376720",
+        "comment": "This trigger runs when a conversation update activity is sent to the bot. This indicates a user or bot being added or removed from a conversation."
+      },
+      "actions": [
+        {
+          "$kind": "Microsoft.Foreach",
+          "$designer": {
+            "id": "518944",
+            "name": "Loop: for each item",
+            "comment": "For each member added to the conversation."
+          },
+          "itemsProperty": "turn.Activity.membersAdded",
+          "actions": [
+            {
+              "$kind": "Microsoft.IfCondition",
+              "$designer": {
+                "id": "641773",
+                "name": "Branch: if/else",
+                "comment": "Checks that that member added ID does not match the bot ID. This prevents the greeting message from being sent when the bot is added to a conversation."
+              },
+              "condition": "=string(dialog.foreach.value.id) != string(turn.Activity.Recipient.id)",
+              "actions": [
+                {
+                  "$kind": "Microsoft.SetProperty",
+                  "$designer": {
+                    "id": "GhAYd0"
+                  },
+                  "property": "user.isNew",
+                  "value": true
+                },
+                {
+                  "$kind": "Microsoft.SendActivity",
+                  "$designer": {
+                    "id": "859266",
+                    "name": "Send a response"
+                  },
+                  "activity": "${SendActivity_Greeting()}"
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "$kind": "Microsoft.OnUnknownIntent",
+      "$designer": {
+        "id": "mb2n1u",
+        "comment": "This trigger fires when an incoming activity is not handled by any other trigger."
+      },
+      "actions": [
+        {
+          "$kind": "Microsoft.SetProperty",
+          "$designer": {
+            "id": "amL64L"
+          },
+          "property": "user.data",
+          "value": {
+            "role": "user",
+            "content": "hello"
+          }
+        },
+        {
+          "$kind": "Microsoft.IfCondition",
+          "$designer": {
+            "id": "4X29rV"
+          },
+          "condition": "= turn.activity.text == \"new\" || user.isNew",
+          "actions": [
+            {
+              "$kind": "Microsoft.SetProperty",
+              "$designer": {
+                "id": "fcnQjN"
+              },
+              "property": "user.isNew",
+              "value": false
+            },
+            {
+              "$kind": "Microsoft.SetProperty",
+              "$designer": {
+                "id": "FDv9Nk"
+              },
+              "property": "user.inputData",
+              "value": [
+                {
+                  "role": "user",
+                  "content": "${turn.activity.text}"
+                }
+              ]
+            }
+          ],
+          "elseActions": [
+            {
+              "$kind": "Microsoft.SetProperty",
+              "$designer": {
+                "id": "o49X0j"
+              },
+              "property": "turn.newInput",
+              "value": [
+                {
+                  "role": "user",
+                  "content": "${turn.activity.text}"
+                }
+              ]
+            },
+            {
+              "$kind": "Microsoft.SetProperty",
+              "$designer": {
+                "id": "bgEhGZ"
+              },
+              "property": "user.inputData",
+              "value": "=union(user.inputData, turn.newInput)"
+            }
+          ]
+        },
+        {
+          "$kind": "Microsoft.HttpRequest",
+          "$designer": {
+            "id": "QsnqTU"
+          },
+          "resultProperty": "turn.results",
+          "method": "POST",
+          "url": "https://andromeda-backend.azurewebsites.net/chat",
+          "contentType": "application/json",
+          "responseType": "json",
+          "body": {
+            "messages": "=user.inputData"
+          },
+          "headers": {
+            "token": "c42b14cc-d59e-407e-a79b-53cdcce70e12"
+          }
+        },
+        {
+          "$kind": "Microsoft.SendActivity",
+          "$designer": {
+            "id": "eagtIo"
+          },
+          "activity": "${SendActivity_eagtIo()}"
+        },
+        {
+          "$kind": "Microsoft.SetProperty",
+          "$designer": {
+            "id": "YARcNO"
+          },
+          "property": "turn.outputData",
+          "value": [
+            {
+              "role": "assistant",
+              "content": "=turn.results.content.response"
+            }
+          ]
+        },
+        {
+          "$kind": "Microsoft.SetProperty",
+          "$designer": {
+            "id": "svLS6n"
+          },
+          "property": "user.inputData",
+          "value": "=union(user.inputData, turn.outputData)"
+        }
+      ]
+    }
+  ],
+  "generator": "Andromeda.lg",
+  "id": "Andromeda",
+  "recognizer": "Andromeda.lu.qna"
+}

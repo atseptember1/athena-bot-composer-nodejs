@@ -1,0 +1,17 @@
+{
+  "profileName": "AndromedaBot",
+  "jobId": "93377579-2f58-4827-a41c-70b8303ef6c3",
+  "projectId": "45131.85817820957",
+  "time": "2023-05-28T05:34:30.013Z",
+  "log": [
+    "Creating Azure resources...",
+    "Checking the Existence of the Resource Group ...",
+    "Use the Resource Group: az-open-ai at eastus",
+    "> Creating App Registration ...",
+    "Start to add password for App, Id : 5ad2a8c7-18f6-4ce3-9555-1ad580544289",
+    "> Create App Registration Success! ID: 5ad2a8c7-18f6-4ce3-9555-1ad580544289",
+    "Deploying Web App Resource ...",
+    "Deploying Bot Resource ...",
+    "Provisioning completed successfully!"
+  ]
+}
